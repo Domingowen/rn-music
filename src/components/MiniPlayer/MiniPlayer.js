@@ -22,14 +22,25 @@ import {connect} from 'react-redux';
 import * as Progress from 'react-native-progress';
 
 function MiniPlayer(props) {
-    console.log(props, 'miniPlayer');
-    const [playStatus, setPlayStatus] = useState(false);
+    // console.log(props, 'miniPlayer');
+    const [playStatus, setPlayStatus] = useState(false); // true pause icon false play icon
     const [loop, setLoop] = useState(false); // true single loop false list loop
     const [playProgress, setPlayProgress] = useState(0);
-    console.log(TrackPlayer.getState());
-
+    // console.log(TrackPlayer.getState());
+    TrackPlayer.addEventListener('playback-queue-ended', async (data) => {
+        // console.log(data);
+        checkingMusicPlayStatus();
+    });
+    TrackPlayer.addEventListener('playback-state', data => {
+        // console.log(data, 'state');
+    });
+    TrackPlayer.addEventListener('playback-track-changed', (trackData) => {
+        // console.log(trackData, 'track-changed');
+        // console.log(TrackPlayer);
+        // this.setAudioPlayerRate(this.audioPlayRate, (Platform.OS === 'ios' ? 2000 : 0))
+    });
     useEffect(() => {
-        console.log(playStatus);
+        // console.log(playStatus);
         if (playStatus) {
             TrackPlayer.play()
         } else {
@@ -44,8 +55,12 @@ function MiniPlayer(props) {
                 loop: 1
             })
         }
-
     }, [playStatus, loop]);
+    useEffect(() => {
+        if(props.player) {
+            setPlayStatus(true);
+        }
+    }, [props.player]);
     let playStatusHandle = () => {
         setPlayStatus(!playStatus);
     };
@@ -58,10 +73,10 @@ function MiniPlayer(props) {
         if (props.player) {
             timer = setInterval(async () => {
                 let singPosition = Math.floor(await TrackPlayer.getPosition());
-                console.log(singPosition);
-                console.log(singDuration);
+                // console.log(singPosition);
+                // console.log(singDuration);
                 let currentPosition = (singPosition / singDuration);
-                console.log(currentPosition);
+                // console.log(currentPosition);
                 setPlayProgress(Number(currentPosition));
                 if(singPosition === singDuration) {
                     checkingMusicPlayStatus();
@@ -76,7 +91,7 @@ function MiniPlayer(props) {
             timer = null;
         }
     }, [playProgress, props.player]);
-    console.log(playProgress);
+    // console.log(playProgress);
     async function settingMusicLoop () {
         setLoop(!loop);
 
@@ -92,6 +107,7 @@ function MiniPlayer(props) {
                 if(props.player.id === musicQueue[musicQueue.length - 1].id) {
                     TrackPlayer.skip(musicQueue[0].id);
                 }
+                TrackPlayer.play();
                 break;
             default:
                 break;

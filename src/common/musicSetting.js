@@ -18,8 +18,8 @@ export default function initMusic() {
                 TrackPlayer.CAPABILITY_SKIP,
                 TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
                 TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-                TrackPlayer.CAPABILITY_JUMP_FORWARD,
-                TrackPlayer.CAPABILITY_JUMP_BACKWARD
+                // TrackPlayer.CAPABILITY_JUMP_FORWARD,
+                // TrackPlayer.CAPABILITY_JUMP_BACKWARD
             ],
 
             // An array of capabilities that will show up when the notification is in the compact form on Android
