@@ -3,6 +3,7 @@ package com.musicproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.codepush.react.CodePush;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.github.wumke.RNExitApp.RNExitAppPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
@@ -23,6 +24,12 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
+        @Override
+        protected String getJSBundleFile() {
+        return CodePush.getJSBundleFile();
+        }
+    
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
@@ -32,6 +39,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new CodePush(getResources().getString("9dQ-HCP45ULKha6JWBZ5yhMepwI5HJW9TwQ6yS"), getApplicationContext(), BuildConfig.DEBUG),
             new RNDeviceInfo(),
             new RNExitAppPackage(),
             new ReanimatedPackage(),
